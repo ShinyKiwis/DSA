@@ -25,7 +25,7 @@ class NVector {
     const int KShrinkFactor = 4;
     int size = 0;
     int* arr;
-    void resize();
+    void resize(int candidateSize);
     void decrease();
     void increase();
 };

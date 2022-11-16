@@ -33,7 +33,7 @@ int NVector::find(int item) const {
 }
 
 void NVector::push(int item) {
-  resize();
+  resize(size+1);
   arr[size] = item;
   size++;
 }
@@ -43,7 +43,7 @@ void NVector::insert(int item, int index) {
     std::cout << "ERROR: Index Out Of Bound" << std::endl;
   }
   // Traverse to the item
-  resize();
+  resize(size+1);
   for (int i = size; i > index; i--) {
     arr[i] = arr[i - 1];
   }
@@ -58,9 +58,9 @@ int NVector::pop() {
     std::cout << "Nothing to pop!" << std::endl;
     return -1;
   }
+  resize(size-1);
   int value = arr[size - 1];
   size--;
-  resize();
   return value;
 }
 
@@ -68,33 +68,38 @@ void NVector::deleteItem(int index) {
   if (index == size - 1) {
     pop();
   } else {
+    resize(size-1);
     for (int i = index; i < size; i++) {
       arr[i] = arr[i + 1];
     }
-    resize();
     size--;
   }
 }
 
 void NVector::remove(int item) {
-  for (int i =0; i<size;i++){
-    if(arr[i] == item){
+  for (int i = 0; i < size; i++) {
+    if (arr[i] == item) {
       deleteItem(i);
       i--;
     }
   }
 }
 
-void NVector::resize() {
-  if (size == capacity) {
-    increase();
-  } else if (size == capacity / KShrinkFactor) {
-    decrease();
+void NVector::resize(int candidateSize) {
+  if (size < candidateSize) {
+    if (size == capacity) {
+      increase();
+    }
+  } else if (size > candidateSize) {
+    if (size < capacity / KShrinkFactor) {
+      decrease();
+    }
   }
 }
 
 void NVector::increase() {
   int *newArr = new int[capacity * kGrowthFactor];
+  capacity = capacity * kGrowthFactor;
   for (int i = 0; i < size; i++) {
     newArr[i] = arr[i];
   }
@@ -104,6 +109,7 @@ void NVector::increase() {
 
 void NVector::decrease() {
   int *newArr = new int[capacity / 2];
+  capacity = capacity / 2;
   for (int i = 0; i < size; i++) {
     newArr[i] = arr[i];
   }

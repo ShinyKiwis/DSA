@@ -16,8 +16,15 @@ int main (int argc, char *argv[])
   newVector->insert(112399, 2);
   newVector->insert(11293, 0);
   newVector->push(16);
+  newVector->push(16);
+  newVector->push(16);
+  newVector->push(16);
   newVector->push(1123);
   newVector->push(213);
+  newVector->pop();
+  newVector->pop();
+  newVector->push(16);
+  newVector->remove(16);
 
   for(int i =0;i<newVector->getSize();i++){
     cout << newVector->at(i) << " ";
